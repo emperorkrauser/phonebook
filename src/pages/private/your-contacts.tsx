@@ -1,10 +1,10 @@
-import { AllContacts } from '../../components/contacts';
+import { Contacts } from '../../components/contacts/contacts';
 import { DashboarLayout } from './dashboard-layout';
-export const DashboardPage = () => {
+export const YourContactsPage = () => {
   return (
     <>
       <DashboarLayout>
-        <AllContacts />
+        <Contacts />
       </DashboarLayout>
     </>
   );
