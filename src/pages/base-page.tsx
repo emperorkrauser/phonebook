@@ -13,22 +13,22 @@ const PrivatePages = ({
 }) => {
   return (
     <Routes>
-      <Route path='/' element={!isAuth ? <LoginPage /> : <DashboardPage />} />
+      <Route path="/" element={!isAuth ? <LoginPage /> : <DashboardPage />} />
       {isAuth && !isAdmin && (
         <Route element={<ProtectedRoutes isAuth={isAuth} />}>
-          <Route path='/' element={<DashboardPage />} />
-          <Route path='/feed' element={<DashboardPage />} />
-          <Route path='/contacts' element={<YourContactsPage />} />
-          <Route path='/*' element={<DashboardPage />} />
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/feed" element={<DashboardPage />} />
+          <Route path="/contacts" element={<YourContactsPage />} />
+          <Route path="/*" element={<DashboardPage />} />
         </Route>
       )}
       {isAuth && isAdmin && (
         <Route element={<ProtectedRoutes isAuth={isAuth} />}>
-          <Route path='/' element={<DashboardPage />} />
-          <Route path='/admin-dashboard' element={<DashboardPage />} />
-          <Route path='/contacts' element={<YourContactsPage />} />
-          <Route path='/users' element={<Users />} />
-          <Route path='/*' element={<DashboardPage />} />
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/admin-dashboard" element={<DashboardPage />} />
+          <Route path="/contacts" element={<YourContactsPage />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/*" element={<DashboardPage />} />
         </Route>
       )}
     </Routes>
@@ -44,21 +44,21 @@ const PublicPages = ({
 }) => {
   return (
     <Routes>
-      <Route path='/' element={!isAuth ? <LoginPage /> : <DashboardPage />} />
+      <Route path="/" element={!isAuth ? <LoginPage /> : <DashboardPage />} />
       <Route
-        path='/register'
+        path="/register"
         element={!isToRegister ? <LoginPage /> : <RegistrationPage />}
       />
-      <Route path='/LoginPage' element={<LoginPage />} />
-      <Route path='/*' element={<LoginPage />} />
+      <Route path="/LoginPage" element={<LoginPage />} />
+      <Route path="/*" element={<LoginPage />} />
     </Routes>
   );
 };
 
 export const BasePage = () => {
-  const isAuth = true;
-  const isToRegister = false;
-  const isAdmin = true;
+  const isAuth = false;
+  const isToRegister = true;
+  const isAdmin = false;
 
   if (isAuth) {
     return <PrivatePages isAuth={isAuth} isAdmin={isAdmin} />;

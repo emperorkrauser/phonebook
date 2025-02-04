@@ -11,7 +11,13 @@ const port = 3001;
 const app = express();
 const AppRouter = Router();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5174',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded());
 app.use('/api', AppRouter);

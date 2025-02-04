@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000';
 
 export interface RegisterProps {
   firstName: string;
@@ -26,6 +26,7 @@ export class AuthService {
       return result;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 }
