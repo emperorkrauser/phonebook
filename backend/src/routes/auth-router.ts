@@ -17,7 +17,7 @@ export function AuthRouter(AppRouter: Router) {
 
     try {
       if (error) {
-        res.status(400).send({
+        res.status(400).json({
           message: 'Unable to login.',
           status: error,
         });
@@ -25,7 +25,7 @@ export function AuthRouter(AppRouter: Router) {
 
       const user = await UserController.browseByEmail(email);
       if (!user) {
-        res.status(400).send({
+        res.status(400).json({
           message: 'No user found.',
           status: error,
         });
@@ -35,13 +35,13 @@ export function AuthRouter(AppRouter: Router) {
         ? await bcrypt.compare(password, user.password)
         : false;
       if (!isPasswordValid) {
-        return res.status(400).send({
+        return res.status(400).json({
           message: 'Invalid password.',
         });
       }
 
       if (!secretKey) {
-        return res.status(500).send({
+        return res.status(500).json({
           message: 'Internal server error.',
         });
       }
@@ -50,13 +50,13 @@ export function AuthRouter(AppRouter: Router) {
         expiresIn: '1h',
       });
 
-      res.status(200).send({
+      res.status(200).json({
         data: user,
         message: 'Login successful.',
         token,
       });
     } catch (error) {
-      res.status(500).send({
+      res.status(500).json({
         message: 'Internal server error.',
         status: error,
       });
@@ -70,7 +70,7 @@ export function AuthRouter(AppRouter: Router) {
 
     try {
       if (error) {
-        res.status(400).send({
+        res.status(400).json({
           message: 'Error in validating user details.',
           status: error,
         });
@@ -79,7 +79,7 @@ export function AuthRouter(AppRouter: Router) {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       const result = await UserController.browseByEmail(email);
       if (result) {
-        res.status(400).send({
+        res.status(400).json({
           message: 'Duplicate email found.',
           status: error,
         });
@@ -91,17 +91,17 @@ export function AuthRouter(AppRouter: Router) {
       });
 
       if (!addUserResponse) {
-        res.status(404).send({
+        res.status(404).json({
           data: addUserResponse,
           message: 'Unable to register user.',
         });
       }
-      res.status(200).send({
+      res.status(200).json({
         data: addUserResponse,
         message: 'User registered successfully.',
       });
     } catch (error) {
-      res.status(500).send({
+      res.status(500).json({
         message: 'Internal server error.',
         status: error,
       });
