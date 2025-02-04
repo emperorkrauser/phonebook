@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router';
 import { LoginPage, RegistrationPage } from './public';
 import { DashboardPage, YourContactsPage } from './private';
 import { ProtectedRoutes } from './protected-routes';
+import { Users } from '../components/users';
 
 const PrivatePages = ({
   isAuth,
@@ -25,6 +26,8 @@ const PrivatePages = ({
         <Route element={<ProtectedRoutes isAuth={isAuth} />}>
           <Route path='/' element={<DashboardPage />} />
           <Route path='/admin-dashboard' element={<DashboardPage />} />
+          <Route path='/contacts' element={<YourContactsPage />} />
+          <Route path='/users' element={<Users />} />
           <Route path='/*' element={<DashboardPage />} />
         </Route>
       )}
@@ -55,7 +58,7 @@ const PublicPages = ({
 export const BasePage = () => {
   const isAuth = true;
   const isToRegister = false;
-  const isAdmin = false;
+  const isAdmin = true;
 
   if (isAuth) {
     return <PrivatePages isAuth={isAuth} isAdmin={isAdmin} />;

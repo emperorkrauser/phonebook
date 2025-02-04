@@ -5,7 +5,7 @@ export class ContactService {
   async browseAll() {
     try {
       const result = await axios.get(`${BASE_URL}/contact`);
-      return result;
+      return result.data;
     } catch (error) {
       console.error(error);
     }

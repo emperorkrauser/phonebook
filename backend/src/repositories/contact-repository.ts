@@ -20,22 +20,15 @@ export interface ContactProps extends BaseProps {
 
 export class ContactRepository {
   public async browse() {
-    try {
-      // const res = await ContactModel.find({ deletedAt: null });
-      return contacts;
-    } catch (error) {
-      console.error(error);
-    }
+    // commenting it when unable to connect to the database
+    // const res = await ContactModel.find({ deletedAt: null });
+    return contacts;
   }
 
   public async browseOne(uuid: string) {
-    try {
-      const res = await ContactModel.findOne({ _id: uuid, deletedAt: null });
-      if (!res) return;
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await ContactModel.findOne({ _id: uuid, deletedAt: null });
+    if (!res) return;
+    return res;
   }
 
   public async add(data: ContactProps) {
@@ -46,52 +39,40 @@ export class ContactRepository {
       deletedAt: null,
     };
 
-    try {
-      const res = await ContactModel.create(finalData);
-      if (!res) return;
-      const savedData = res.save();
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await ContactModel.create(finalData);
+    if (!res) return;
+    const savedData = res.save();
+    return res;
   }
 
   public async update(uuid: string, data: ContactProps) {
-    try {
-      const found = await this.browseOne(uuid);
-      if (!found) return;
-      const res = await ContactModel.findOneAndUpdate(
-        { _id: uuid },
-        {
-          ...data,
-          updatedAt: moment().format('MM-DD-YYYY-hh:mm'),
-        },
-        {
-          new: true,
-        }
-      );
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
+    const found = await this.browseOne(uuid);
+    if (!found) return;
+    const res = await ContactModel.findOneAndUpdate(
+      { _id: uuid },
+      {
+        ...data,
+        updatedAt: moment().format('MM-DD-YYYY-hh:mm'),
+      },
+      {
+        new: true,
+      }
+    );
+    return res;
   }
 
   public async delete(uuid: string) {
-    try {
-      const found = await this.browseOne(uuid);
-      if (!found) return;
-      const res = await ContactModel.findOneAndUpdate(
-        { _id: uuid },
-        {
-          deletedAt: moment().format('MM-DD-YYYY-hh:mm'),
-        },
-        {
-          new: true,
-        }
-      );
-      return res;
-    } catch (error) {
-      console.error(error);
-    }
+    const found = await this.browseOne(uuid);
+    if (!found) return;
+    const res = await ContactModel.findOneAndUpdate(
+      { _id: uuid },
+      {
+        deletedAt: moment().format('MM-DD-YYYY-hh:mm'),
+      },
+      {
+        new: true,
+      }
+    );
+    return res;
   }
 }

@@ -15,30 +15,31 @@ export const AllContacts = () => {
       if (!result) {
         console.log('Error fetching contacts');
         return;
-        setIsLoading(false);
       }
       const data = result.data;
       setContacts(data);
       setTimeout(() => {
         setIsLoading(false);
-      }, 500);
+      }, 1000);
     }
 
     fetchContacts();
   }, []);
 
-  if (isLoading) {
-    return <ContactsLayout>Loading...</ContactsLayout>;
-  }
-
   return (
     <>
       <ContactsLayout>
         <h4>All Contacts List:</h4>
-        <ul>
+        <ul className='w-full'>
           {contacts.length > 0 &&
             contacts.map((contact) => {
-              return <ContactItem key={contact.contactNo} contact={contact} />;
+              return (
+                <ContactItem
+                  key={contact.contactNo}
+                  contact={contact}
+                  isLoading={isLoading}
+                />
+              );
             })}
         </ul>
       </ContactsLayout>

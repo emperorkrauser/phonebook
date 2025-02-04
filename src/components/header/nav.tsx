@@ -13,6 +13,9 @@ export const NavigationBar = () => {
           <li>
             <Link to='/contacts'>Contacts</Link>
           </li>
+          <li>
+            <Link to='/users'>Users</Link>
+          </li>
         </ul>
       </nav>
     </>

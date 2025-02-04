@@ -4,3 +4,4 @@ export * from './contact-item-button';
 export * from './your-info';
 export * from './contacts-layout';
 export * from './all-contacts';
+export * from './contact-skeleton';

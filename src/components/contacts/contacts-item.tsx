@@ -1,4 +1,5 @@
 import { ContactItemButton } from './contact-item-button';
+import { Skeleton } from './contact-skeleton';
 
 export interface BaseProps {
   createdAt: string;
@@ -18,18 +19,27 @@ export interface ContactDetails extends BaseProps {
 
 interface ContactItemProps {
   contact: ContactDetails;
+  isLoading?: boolean;
 }
 
-export const ContactItem = ({ contact }: ContactItemProps) => {
+export const ContactItem = ({ contact, isLoading }: ContactItemProps) => {
   const handleUnshare = () => {
     console.log('Unshare');
   };
+
+  if (isLoading) {
+    return (
+      <li className='border-1 border-gray-200 m-1 ml-0 p-1 w-full'>
+        <Skeleton />
+      </li>
+    );
+  }
 
   return (
     <>
       <li
         className={`border-1 border-gray-200 m-1 ml-0 p-1
-        }`}
+}`}
       >
         <div className='flex'>
           <img className='p-4' src={contact.photoUrl} alt={contact.firstName} />

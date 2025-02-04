@@ -8,7 +8,9 @@ export const ContactsLayout = ({ children }: { children: ReactNode }) => {
         <section className='text-left pr-10'>
           <YourInfo />
         </section>
-        <section className='text-left'>{children}</section>
+        <section className='text-left flex flex-row flex-wrap relative w-[100vw]'>
+          {children}
+        </section>
       </div>
     </>
   );

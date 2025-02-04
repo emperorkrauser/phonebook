@@ -2,7 +2,7 @@ interface FormButtonProps {
   customButtonClass?: string;
   label?: string;
   buttonType?: 'button' | 'submit' | 'reset';
-  clickEvent?: () => void;
+  clickEvent?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 export const FormButton = (props: FormButtonProps) => {
   const { customButtonClass, label, buttonType = 'button', clickEvent } = props;
@@ -12,7 +12,7 @@ export const FormButton = (props: FormButtonProps) => {
   return (
     <>
       <button
-        onClick={() => clickEvent}
+        onClick={clickEvent}
         className={defaultButtonClass ? defaultButtonClass : customButtonClass}
         type={buttonType}
       >

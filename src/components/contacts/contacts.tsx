@@ -19,24 +19,28 @@ export const Contacts = () => {
       }
       const data = result.data;
       setContacts(data);
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
 
     fetchContacts();
   }, []);
 
-  if (isLoading) {
-    return <ContactsLayout>Loading...</ContactsLayout>;
-  }
-
   return (
     <>
       <ContactsLayout>
         <h4>My Contacts List:</h4>
-        <ul>
+        <ul className='w-full'>
           {contacts.length > 0 &&
             contacts.map((contact) => {
-              return <ContactItem key={contact.contactNo} contact={contact} />;
+              return (
+                <ContactItem
+                  key={contact.contactNo}
+                  contact={contact}
+                  isLoading={isLoading}
+                />
+              );
             })}
         </ul>
       </ContactsLayout>

@@ -1,9 +1,11 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const MONGO_USER = process.env.VITE_MONGO_USER;
-const MONGO_PASSWORD = process.env.VITE_MONGO_PASSWORD;
+const MONGO_USER = process.env.MONGO_USER;
+const MONGO_PW = process.env.MONGO_PASSWORD;
 
-const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@phonebook.5hk3r.mongodb.net/?retryWrites=true&w=majority&appName=phonebook`;
+const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PW}@phonebook.5hk3r.mongodb.net/?retryWrites=true&w=majority&appName=phonebook`;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -11,6 +13,7 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
+  connectTimeoutMS: 30000,
 });
 export async function run() {
   try {

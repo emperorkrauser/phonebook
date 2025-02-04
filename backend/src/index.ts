@@ -3,7 +3,7 @@ dotenv.config();
 import cors from 'cors';
 import express, { Router } from 'express';
 import { MongoServer } from './mongo-server';
-import { ContactRouter, UserRouter } from './routes';
+import { ContactRouter, UserRouter, AuthRouter } from './routes';
 
 MongoServer;
 
@@ -18,6 +18,7 @@ app.use('/api', AppRouter);
 
 ContactRouter(AppRouter);
 UserRouter(AppRouter);
+AuthRouter(AppRouter);
 
 app.listen(port, () => {
   console.log(`Server running at ${port}`);

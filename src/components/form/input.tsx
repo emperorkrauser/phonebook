@@ -7,6 +7,7 @@ interface FormInputProps {
   inputClass?: string;
   type?: string;
   name?: string;
+  changeInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const FormInput = (props: FormInputProps) => {
@@ -19,6 +20,7 @@ export const FormInput = (props: FormInputProps) => {
     labelClass,
     type = 'text',
     name,
+    changeInput,
   } = props;
   const defaultInputClass =
     'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
@@ -35,6 +37,7 @@ export const FormInput = (props: FormInputProps) => {
         type={type}
         placeholder={placeholder}
         name={name}
+        onChange={changeInput}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { UserProps } from '../repositories';
+import { RegisterProps } from '../repositories';
 import { UserService } from '../services';
 
 export class UserController {
@@ -7,47 +7,32 @@ export class UserController {
     this.AppService = new UserService();
   }
   public static async browse() {
-    try {
-      const result = await UserService.browse();
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await UserService.browse();
+    return result;
   }
 
   public static async browseOne(uuid: string) {
-    try {
-      const result = await UserService.browseOne(uuid);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await UserService.browseOne(uuid);
+    return result;
   }
 
-  public static async add(data: UserProps) {
-    try {
-      const result = await UserService.add(data);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+  public static async browseByEmail(email: string) {
+    const result = await UserService.browseByEmail(email);
+    return result;
   }
 
-  public static async update(uuid: string, data: UserProps) {
-    try {
-      const result = await UserService.update(uuid, data);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+  public static async add(data: RegisterProps) {
+    const result = await UserService.add(data);
+    return result;
+  }
+
+  public static async update(uuid: string, data: RegisterProps) {
+    const result = await UserService.update(uuid, data);
+    return result;
   }
 
   public static async delete(uuid: string) {
-    try {
-      const result = await UserService.delete(uuid);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await UserService.delete(uuid);
+    return result;
   }
 }

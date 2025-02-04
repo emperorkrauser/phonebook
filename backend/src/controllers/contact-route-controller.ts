@@ -7,47 +7,27 @@ export class ContactController {
     this.AppService = new ContactService();
   }
   public static async browse() {
-    try {
-      const result = await ContactService.browse();
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await ContactService.browse();
+    return result;
   }
 
   public static async browseOne(uuid: string) {
-    try {
-      const result = await ContactService.browseOne(uuid);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await ContactService.browseOne(uuid);
+    return result;
   }
 
   public static async add(data: ContactProps) {
-    try {
-      const result = await ContactService.add(data);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await ContactService.add(data);
+    return result;
   }
 
   public static async update(uuid: string, data: ContactProps) {
-    try {
-      const result = await ContactService.update(uuid, data);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await ContactService.update(uuid, data);
+    return result;
   }
 
   public static async delete(uuid: string) {
-    try {
-      const result = await ContactService.delete(uuid);
-      return result;
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await ContactService.delete(uuid);
+    return result;
   }
 }
