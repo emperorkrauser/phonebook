@@ -43,9 +43,10 @@ export class UserRepository {
     return collection;
   }
 
-  public async browse() {
+  public async browse(data: UpdateUserProps) {
+    console.log('browse optional data', data);
     const collection = await this.connect();
-    const res = await collection.find({ deletedAt: null }).toArray();
+    const res = await collection.find({ deletedAt: null, ...data }).toArray();
     return res;
   }
 
@@ -60,7 +61,9 @@ export class UserRepository {
   }
 
   public async browseByEmail(email: string) {
-    const res = await UserModel.findOne({ email, deletedAt: null });
+    const collection = await this.connect();
+    const res = await collection.findOne({ email, deletedAt: null });
+    if (!res) return;
     return res;
   }
 

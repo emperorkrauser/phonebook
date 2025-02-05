@@ -3,11 +3,35 @@ import { UserController } from '../controllers';
 
 export function UserRouter(AppRouter: Router) {
   AppRouter.route('/user').get(async (req: Request, res: Response) => {
+    const data = req.body;
     try {
-      const result = await UserController.browse();
+      const result = await UserController.browse(data);
       res.status(200).json({
         data: result,
         message: 'User list fetched successfully.',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: 'Internal server error.',
+        error,
+      });
+    }
+  });
+
+  AppRouter.route('/user/q').get(async (req: Request, res: Response) => {
+    const { email } = req.query;
+    console.log('browse by email:', email);
+
+    try {
+      const result = await UserController.browseByEmail(email as string);
+      if (!result) {
+        return res.status(404).json({
+          message: 'User not found.',
+        });
+      }
+      return res.status(200).json({
+        data: result,
+        message: 'User fetched successfully by email.',
       });
     } catch (error) {
       return res.status(500).json({

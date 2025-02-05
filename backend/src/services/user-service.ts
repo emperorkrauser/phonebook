@@ -8,8 +8,8 @@ function getRepository() {
   return new UserRepository();
 }
 export class UserService {
-  public static async browse() {
-    const result = await getRepository().browse();
+  public static async browse(data: UpdateUserProps) {
+    const result = await getRepository().browse(data);
     return result;
   }
 

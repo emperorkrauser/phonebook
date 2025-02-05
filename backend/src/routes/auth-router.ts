@@ -9,12 +9,13 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 const secretKey = process.env.SECRET_KEY as string;
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
+const refreshTokens: string[] = [];
 
 export function AuthRouter(AppRouter: Router) {
-  AppRouter.route('/login').get(async (req: Request, res: Response) => {
+  AppRouter.route('/login').post(async (req: Request, res: Response) => {
     const { error, value } = AuthSchemaValidation.validate(req.body);
     const { email, password } = value;
-
     try {
       if (error) {
         res.status(400).json({
@@ -50,10 +51,20 @@ export function AuthRouter(AppRouter: Router) {
         expiresIn: '1h',
       });
 
+      const refreshToken = jwt.sign(
+        { id: user?._id, email: user?.email },
+        refreshTokenSecret,
+        {
+          expiresIn: '7d',
+        }
+      );
+      refreshTokens.push(refreshToken);
+
       res.status(200).json({
-        data: user,
+        data: { ...user, password: null },
         message: 'Login successful.',
         token,
+        refreshToken,
       });
     } catch (error) {
       res.status(500).json({
@@ -61,6 +72,31 @@ export function AuthRouter(AppRouter: Router) {
         status: error,
       });
     }
+  });
+
+  AppRouter.route('/token').post((req: Request, res: Response) => {
+    const { token } = req.body;
+    if (!token) {
+      return res.status(401).json({ message: 'Refresh token is required' });
+    }
+    if (!refreshTokens.includes(token)) {
+      return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+
+    jwt.verify(token, refreshTokenSecret, (err: any, user: any) => {
+      if (err) {
+        return res.status(403).json({ message: 'Invalid refresh token' });
+      }
+
+      const newToken = jwt.sign({ id: user.id, email: user.email }, secretKey, {
+        expiresIn: '1h',
+      });
+
+      res.status(200).json({
+        message: 'Token refreshed successfully.',
+        token: newToken,
+      });
+    });
   });
 
   AppRouter.route('/register').post(async (req: Request, res: Response) => {
@@ -106,5 +142,19 @@ export function AuthRouter(AppRouter: Router) {
         status: error,
       });
     }
+  });
+
+  AppRouter.route('/logout').post((req: Request, res: Response) => {
+    const { token } = req.body;
+    const index = refreshTokens.indexOf(token);
+    if (index > -1) {
+      refreshTokens.splice(index, 1);
+    }
+    res.status(200).json({
+      data: {
+        isLogout: true,
+      },
+      message: 'Logged out successfully',
+    });
   });
 }

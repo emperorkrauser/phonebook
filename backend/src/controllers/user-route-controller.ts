@@ -6,8 +6,8 @@ export class UserController {
   constructor() {
     this.AppService = new UserService();
   }
-  public static async browse() {
-    const result = await UserService.browse();
+  public static async browse(data: UpdateUserProps) {
+    const result = await UserService.browse(data);
     return result;
   }
 

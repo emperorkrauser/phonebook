@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isAuth: false,
-  isLogout: true,
   isToRegister: false,
   user: {},
   error: '',
@@ -14,9 +13,6 @@ export const authSlice = createSlice({
   reducers: {
     isLogin: (state, action) => {
       state.isAuth = action.payload;
-    },
-    isLogout: (state, action) => {
-      state.isLogout = action.payload;
     },
     isToRegister: (state, action) => {
       state.isToRegister = action.payload;
@@ -30,5 +26,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { isLogin, isLogout, isToRegister, storeUser, authError } =
+export const { isLogin, isToRegister, storeUser, authError } =
   authSlice.actions;
