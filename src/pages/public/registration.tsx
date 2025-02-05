@@ -22,12 +22,22 @@ export const RegistrationPage = () => {
     });
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     const isValid = handleValidateForm();
     if (!isValid) return;
-    register(formData);
+    const registeredUser = await register(formData);
+    if (registeredUser) {
+      console.log('registered user', registeredUser);
+      setFormData({
+        firstName: '',
+        lastName: '',
+        password: '',
+        email: '',
+        contactNo: '',
+      });
+    }
   };
 
   const handleValidateForm = () => {

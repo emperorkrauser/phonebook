@@ -10,7 +10,7 @@ export function UserRouter(AppRouter: Router) {
         message: 'User list fetched successfully.',
       });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: 'Internal server error.',
         error,
       });
@@ -21,7 +21,12 @@ export function UserRouter(AppRouter: Router) {
     const { uuid } = req.params;
     try {
       const result = await UserController.browseOne(uuid as string);
-      res.status(200).json({
+      if (!result) {
+        return res.status(404).json({
+          message: 'User not found.',
+        });
+      }
+      return res.status(200).json({
         data: result,
         message: 'User fetched successfully.',
       });
@@ -34,10 +39,15 @@ export function UserRouter(AppRouter: Router) {
   });
 
   AppRouter.route('/user').post(async (req: Request, res: Response) => {
-    const { data } = req.body;
+    const data = req.body;
     try {
       const result = await UserController.add(data);
-      res.status(200).json({
+      if (!result) {
+        return res.status(404).json({
+          message: 'Unable to add user.',
+        });
+      }
+      return res.status(200).json({
         data: result,
         message: 'User added successfully.',
       });
@@ -51,10 +61,15 @@ export function UserRouter(AppRouter: Router) {
 
   AppRouter.route('/user/:uuid').put(async (req: Request, res: Response) => {
     const { uuid } = req.params;
-    const { data } = req.body;
+    const data = req.body;
     try {
       const result = await UserController.update(uuid as string, data);
-      res.status(200).json({
+      if (!result) {
+        return res.status(404).json({
+          message: 'Unable to update user.',
+        });
+      }
+      return res.status(200).json({
         data: result,
         message: 'User updated successfully.',
       });
@@ -66,19 +81,26 @@ export function UserRouter(AppRouter: Router) {
     }
   });
 
-  AppRouter.route('/user/:uuid').delete(async (req: Request, res: Response) => {
-    const { uuid } = req.params;
-    try {
-      const result = await UserController.delete(uuid);
-      res.status(200).json({
-        data: result,
-        message: 'User deleted successfully.',
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Internal server error.',
-        error,
-      });
+  AppRouter.route('/user/delete/:uuid').put(
+    async (req: Request, res: Response) => {
+      const { uuid } = req.params;
+      try {
+        const result = await UserController.delete(uuid);
+        if (!result) {
+          return res.status(404).json({
+            message: 'Unable to delete user.',
+          });
+        }
+        return res.status(200).json({
+          data: result,
+          message: 'User deleted successfully.',
+        });
+      } catch (error) {
+        res.status(500).json({
+          message: 'Internal server error.',
+          error,
+        });
+      }
     }
-  });
+  );
 }

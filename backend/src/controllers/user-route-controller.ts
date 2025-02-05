@@ -1,4 +1,4 @@
-import { RegisterProps } from '../repositories';
+import { RegisterProps, UpdateUserProps } from '../repositories';
 import { UserService } from '../services';
 
 export class UserController {
@@ -26,7 +26,7 @@ export class UserController {
     return result;
   }
 
-  public static async update(uuid: string, data: RegisterProps) {
+  public static async update(uuid: string, data: UpdateUserProps) {
     const result = await UserService.update(uuid, data);
     return result;
   }
