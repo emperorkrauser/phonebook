@@ -1,25 +1,36 @@
 import { Routes, Route } from 'react-router';
 import { LoginPage, RegistrationPage } from './public';
-import { DashboardPage, YourContactsPage } from './private';
+import {
+  DashboardPage,
+  YourContactsPage,
+  UsersPage,
+  UsersEditPage,
+} from './private';
 import { ProtectedRoutes } from './protected-routes';
-import { Users } from '../components/users';
 import { useSelector } from 'react-redux';
 
 const PrivatePages = ({
   isAuth,
   isAdmin,
   role,
+  status,
 }: {
   isAuth: boolean;
   isAdmin: boolean;
   role: string;
+  status: string;
 }) => {
   return (
     <Routes>
-      <Route path='/' element={!isAuth ? <LoginPage /> : <DashboardPage />} />
+      <Route
+        path='/'
+        element={
+          !isAuth || status !== 'active' ? <LoginPage /> : <DashboardPage />
+        }
+      />
       {isAuth && !isAdmin && (
         <Route element={<ProtectedRoutes isAuth={isAuth} />}>
-          <Route path='/' element={<DashboardPage />} />
+          <Route path='/dashboard' element={<DashboardPage />} />
           <Route path='/feed' element={<DashboardPage />} />
           <Route path='/contacts' element={<YourContactsPage />} />
           <Route path='/*' element={<DashboardPage />} />
@@ -29,10 +40,12 @@ const PrivatePages = ({
         <Route element={<ProtectedRoutes isAuth={isAuth} />}>
           <Route path='/' element={<DashboardPage />} />
           {role === 'super-admin' && (
-            <Route path='/admin-dashboard' element={<DashboardPage />} />
+            <Route>
+              <Route path='/users' element={<UsersPage />} />
+              <Route path='/users/:uuid' element={<UsersEditPage />} />
+            </Route>
           )}
           <Route path='/contacts' element={<YourContactsPage />} />
-          <Route path='/users' element={<Users />} />
           <Route path='/*' element={<DashboardPage />} />
         </Route>
       )}
@@ -72,6 +85,7 @@ export const BasePage = () => {
         isAuth={isAuth}
         isAdmin={user.role !== 'user' ? true : false}
         role={user.role}
+        status={user.status}
       />
     );
   }

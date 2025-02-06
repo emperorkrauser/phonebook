@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { FormButton, FormInput } from '../../components';
 import { useAuth } from '../../hooks';
+import { useNavigate } from 'react-router';
 
 export const RegistrationPage = () => {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,6 +15,7 @@ export const RegistrationPage = () => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -29,7 +32,8 @@ export const RegistrationPage = () => {
     if (!isValid) return;
     const registeredUser = await register(formData);
     if (registeredUser) {
-      console.log('registered user', registeredUser);
+      setIsRegistered(true);
+      setIsSubmitting(false);
       setFormData({
         firstName: '',
         lastName: '',
@@ -37,6 +41,9 @@ export const RegistrationPage = () => {
         email: '',
         contactNo: '',
       });
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
     }
   };
 
@@ -59,6 +66,8 @@ export const RegistrationPage = () => {
   return (
     <>
       <div className='w-full max-w-xs'>
+        <h1 className='text-center text-3xl font-bold'>Registration</h1>
+        {isRegistered && <p>Please wait for admin confirmation.</p>}
         <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
           <div className='mb-4'>
             <FormInput
@@ -116,6 +125,7 @@ export const RegistrationPage = () => {
               label='Submit'
               buttonType='submit'
               clickEvent={handleClick}
+              disabled={isSubmitting}
             />
           </div>
           {isSubmitting && !isFormValid && (

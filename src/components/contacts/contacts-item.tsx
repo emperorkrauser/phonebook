@@ -4,7 +4,7 @@ import { Skeleton } from './contact-skeleton';
 export interface BaseProps {
   createdAt: string;
   updatedAt: string;
-  deletedAt: string;
+  deletedAt: string | null;
 }
 
 export interface ContactDetails extends BaseProps {
@@ -42,7 +42,11 @@ export const ContactItem = ({ contact, isLoading }: ContactItemProps) => {
 }`}
       >
         <div className='flex'>
-          <img className='p-4' src={contact.photoUrl} alt={contact.firstName} />
+          <img
+            className='p-4'
+            src={contact.photoUrl ?? 'https://imageplaceholder.net/100x100'}
+            alt={contact.firstName}
+          />
           <div>
             <ul className='flex text-left p-4 pb-0 gap-2'>
               <li className='m-0 p-0'>

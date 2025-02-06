@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { FormInput, FormButton } from '../../components';
 import { useAuth } from '../../hooks';
 import { useDispatch } from 'react-redux';
-import { storeUser, isLogin } from '../../reducers';
+import { storeUser, isLogin, isToRegister } from '../../reducers';
 import { useNavigate } from 'react-router';
 
 export const LoginPage = () => {
@@ -15,14 +15,36 @@ export const LoginPage = () => {
     email: '',
     password: '',
   });
-
-  useEffect(() => {}, []);
+  const [error, setError] = useState('');
 
   const handleSubmitLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log('loginData', loginData);
+    if (
+      loginData.email === '' ||
+      loginData.password === '' ||
+      loginData.password.length < 6
+    ) {
+      setError('Please fill in all fields');
+      return;
+    }
     const res = await login(loginData);
     if (!res) return;
+
     const { data, token, refreshToken } = res;
+    if (data.status !== 'active') {
+      setError('User is not yet approved. Please wait.');
+      dispatch(storeUser({}));
+      dispatch(isLogin(false));
+      dispatch(isToRegister(false));
+      setLoginData({
+        email: '',
+        password: '',
+      });
+      navigate('/');
+      return;
+    }
+    setError('');
     localStorage.setItem('token', token);
     localStorage.setItem('refreshToken', refreshToken);
     dispatch(storeUser(data));
@@ -42,9 +64,17 @@ export const LoginPage = () => {
     });
   };
 
+  const handleRegister = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(isToRegister(true));
+    navigate('/register');
+  };
+
   return (
     <>
       <div className='w-full max-w-xs'>
+        <h1 className='text-4xl'>Phonebook</h1>
+        {error && <p className='text-red-500'>{error}</p>}
         <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
           <div className='mb-4'>
             <FormInput
@@ -54,6 +84,7 @@ export const LoginPage = () => {
               htmlFor='email'
               type='text'
               name='email'
+              value={loginData.email}
               changeInput={handleChangeLogin}
             />
           </div>
@@ -66,18 +97,14 @@ export const LoginPage = () => {
                 htmlFor='password'
                 type='password'
                 name='password'
+                value={loginData.password}
                 changeInput={handleChangeLogin}
               />
             </div>
           </div>
           <div className='flex items-center justify-between'>
             <FormButton label='Sign In' clickEvent={handleSubmitLogin} />
-            <Link
-              className='inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800'
-              to='/register'
-            >
-              Register
-            </Link>
+            <FormButton label='Register' clickEvent={handleRegister} />
           </div>
           <div className='flex items-center justify-between pt-4'>
             <Link

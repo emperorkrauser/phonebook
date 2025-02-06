@@ -18,7 +18,7 @@ export function AuthRouter(AppRouter: Router) {
     const { email, password } = value;
     try {
       if (error) {
-        res.status(400).json({
+        return res.status(400).json({
           message: 'Unable to login.',
           status: error,
         });
@@ -26,11 +26,12 @@ export function AuthRouter(AppRouter: Router) {
 
       const user = await UserController.browseByEmail(email);
       if (!user) {
-        res.status(400).json({
+        return res.status(400).json({
           message: 'No user found.',
           status: error,
         });
       }
+      console.log('user', user);
 
       const isPasswordValid = user?.password
         ? await bcrypt.compare(password, user.password)
@@ -40,6 +41,7 @@ export function AuthRouter(AppRouter: Router) {
           message: 'Invalid password.',
         });
       }
+      console.log('isPasswordValid', isPasswordValid);
 
       if (!secretKey) {
         return res.status(500).json({

@@ -1,5 +1,6 @@
 import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3001/api';
+const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development';
 
 export interface RegisterProps {
   firstName: string;
@@ -30,8 +31,9 @@ export class AuthService {
       );
       return result.data;
     } catch (error) {
-      console.error(error);
-      throw error;
+      if (ENVIRONMENT === 'development') {
+        console.error(error);
+      }
     }
   }
 
@@ -48,8 +50,9 @@ export class AuthService {
       );
       return result.data;
     } catch (error) {
-      console.error(error);
-      throw error;
+      if (ENVIRONMENT === 'development') {
+        console.error(error);
+      }
     }
   }
 
@@ -60,8 +63,9 @@ export class AuthService {
       });
       return result.data;
     } catch (error) {
-      console.error(error);
-      throw error;
+      if (ENVIRONMENT === 'development') {
+        console.error(error);
+      }
     }
   }
 }
