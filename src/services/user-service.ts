@@ -9,6 +9,7 @@ export interface UserProps extends Partial<BaseProps> {
   role?: string;
   status?: string;
   contactNo?: string;
+  contacts?: string[];
 }
 
 export class UserService {

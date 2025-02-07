@@ -15,6 +15,7 @@ export interface UpdateUserProps {
   role?: string;
   status?: string;
   contactNo?: string;
+  contacts?: string[];
 }
 
 export interface RegisterProps {
@@ -25,6 +26,7 @@ export interface RegisterProps {
   role: string;
   status: string;
   contactNo: string;
+  contacts?: string[];
 }
 
 dotenv.config();
@@ -70,6 +72,7 @@ export class UserRepository {
   public async add(data: RegisterProps) {
     const finalData = {
       ...data,
+      contacts: [],
       createdAt: moment().format('MM-DD-YYYY-hh:mm:ss'),
       updatedAt: moment().format('MM-DD-YYYY-hh:mm:ss'),
       deletedAt: null,

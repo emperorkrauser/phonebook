@@ -12,6 +12,7 @@ interface User extends BaseProps {
   role: string;
   status: string;
   contactNo: string;
+  contacts?: string[];
 }
 
 export const Users = () => {
@@ -56,10 +57,19 @@ export const Users = () => {
     await fetchUsers();
   };
 
+  const handleShare = async (id: string, contacts: string[]) => {
+    console.log('id', id);
+    console.log('Share data', contacts);
+    const res = await updateOne(id, { contacts });
+    if (!res) return;
+    await fetchUsers();
+  };
+
   return (
     <>
       <UserLayout>
-        <ul className='w-full'>
+        <h4>All Users List:</h4>
+        <ul className="w-full">
           {users.length > 0 ? (
             users.map((user) => {
               return (
@@ -69,6 +79,7 @@ export const Users = () => {
                   isLoading={isLoading}
                   handleActivate={handleActivate}
                   handleDelete={handleDelete}
+                  handleShare={handleShare}
                 />
               );
             })
