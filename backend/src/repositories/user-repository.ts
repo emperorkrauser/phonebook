@@ -46,7 +46,6 @@ export class UserRepository {
   }
 
   public async browse(data: UpdateUserProps) {
-    console.log('browse optional data', data);
     const collection = await this.connect();
     const res = await collection.find({ ...data, deletedAt: null }).toArray();
     return res;
@@ -89,11 +88,9 @@ export class UserRepository {
 
   public async update(uuid: string, data: UpdateUserProps) {
     const collection = await this.connect();
-    console.log('updatedData payload', data);
     const found = await this.browseOne(uuid);
     const updatedAt = moment().format('MM-DD-YYYY-hh:mm:ss');
     if (!found) return;
-    console.log('found', found);
     const updatedData = await collection.updateOne(
       {
         _id: new ObjectId(uuid),
@@ -106,7 +103,6 @@ export class UserRepository {
         },
       }
     );
-    console.log('updatedData result', updatedData);
     return {
       ...data,
       _id: uuid,
@@ -118,7 +114,6 @@ export class UserRepository {
     const collection = await this.connect();
     const found = await this.browseOne(uuid);
     if (!found) return;
-    console.log('user to be deleted', found);
     const res = await collection.updateOne(
       {
         _id: new ObjectId(uuid),
@@ -132,7 +127,6 @@ export class UserRepository {
         },
       }
     );
-    console.log('delete res', res);
     return {
       res,
       ...found,

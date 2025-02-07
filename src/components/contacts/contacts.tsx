@@ -15,7 +15,6 @@ export const Contacts = () => {
     setIsLoading(true);
     const result = await browseAll({ deletedAt: null });
     if (!result) {
-      console.log('Error fetching users');
       setIsLoading(false);
       return;
     }
@@ -33,8 +32,6 @@ export const Contacts = () => {
   }, []);
 
   const handleShare = async (id: string, contacts: string[]) => {
-    console.log('id', id);
-    console.log('Share data', contacts);
     const res = await updateOne(id, { contacts });
     if (!res) return;
     await fetchUsers();

@@ -19,7 +19,6 @@ export const LoginPage = () => {
 
   const handleSubmitLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log('loginData', loginData);
     if (
       loginData.email === '' ||
       loginData.password === '' ||
@@ -72,44 +71,44 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className='w-full max-w-xs'>
-        <h1 className='text-4xl'>Phonebook</h1>
-        {error && <p className='text-red-500'>{error}</p>}
-        <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
-          <div className='mb-4'>
+      <div className="w-full max-w-xs">
+        <h1 className="text-4xl">Phonebook</h1>
+        {error && <p className="text-red-500">{error}</p>}
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <div className="mb-4">
             <FormInput
-              label='email'
-              id='email'
-              placeholder='email'
-              htmlFor='email'
-              type='text'
-              name='email'
+              label="email"
+              id="email"
+              placeholder="email"
+              htmlFor="email"
+              type="text"
+              name="email"
               value={loginData.email}
               changeInput={handleChangeLogin}
             />
           </div>
-          <div className='mb-6'>
-            <div className='mb-4'>
+          <div className="mb-6">
+            <div className="mb-4">
               <FormInput
-                label='password'
-                id='password'
-                placeholder='password'
-                htmlFor='password'
-                type='password'
-                name='password'
+                label="password"
+                id="password"
+                placeholder="password"
+                htmlFor="password"
+                type="password"
+                name="password"
                 value={loginData.password}
                 changeInput={handleChangeLogin}
               />
             </div>
           </div>
-          <div className='flex items-center justify-between'>
-            <FormButton label='Sign In' clickEvent={handleSubmitLogin} />
-            <FormButton label='Register' clickEvent={handleRegister} />
+          <div className="flex items-center justify-between">
+            <FormButton label="Sign In" clickEvent={handleSubmitLogin} />
+            <FormButton label="Register" clickEvent={handleRegister} />
           </div>
-          <div className='flex items-center justify-between pt-4'>
+          <div className="flex items-center justify-between pt-4">
             <Link
-              to='/forgot-password'
-              className='inline-block align-baseline font-bold text-xs text-blue-500 hover:text-blue-800'
+              to="/forgot-password"
+              className="inline-block align-baseline font-bold text-xs text-blue-500 hover:text-blue-800"
             >
               Forgot Password?
             </Link>

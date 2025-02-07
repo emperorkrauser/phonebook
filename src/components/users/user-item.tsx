@@ -70,8 +70,6 @@ export const UserItem = ({
   }
 
   const handleActivateUser = async () => {
-    console.log('clicking handleActivateUser');
-    console.log('!handleActivate', !handleActivate);
     if (!handleActivate) return;
     await handleActivate({ _id: user._id, status: user.status ?? 'inactive' });
   };

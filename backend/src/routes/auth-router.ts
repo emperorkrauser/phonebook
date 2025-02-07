@@ -31,7 +31,6 @@ export function AuthRouter(AppRouter: Router) {
           status: error,
         });
       }
-      console.log('user', user);
 
       const isPasswordValid = user?.password
         ? await bcrypt.compare(password, user.password)
@@ -41,7 +40,6 @@ export function AuthRouter(AppRouter: Router) {
           message: 'Invalid password.',
         });
       }
-      console.log('isPasswordValid', isPasswordValid);
 
       if (!secretKey) {
         return res.status(500).json({

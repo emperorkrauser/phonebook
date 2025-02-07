@@ -4,7 +4,6 @@ import { UserController } from '../controllers';
 export function UserRouter(AppRouter: Router) {
   AppRouter.route('/user').get(async (req: Request, res: Response) => {
     const data = req.query;
-    console.log('browse:', data);
     try {
       const result = await UserController.browse(data);
       res.status(200).json({
@@ -21,7 +20,6 @@ export function UserRouter(AppRouter: Router) {
 
   AppRouter.route('/user/q').get(async (req: Request, res: Response) => {
     const { email } = req.query;
-    console.log('browse by email:', email);
 
     try {
       const result = await UserController.browseByEmail(email as string);
