@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosInstance } from '../utils';
 const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3001/api';
 const ENVIRONMENT = import.meta.env.VITE_ENVIRONMENT || 'development';
 
@@ -18,7 +18,7 @@ export interface LoginProps {
 export class AuthService {
   async register(payload: RegisterProps) {
     try {
-      const result = await axios.post(
+      const result = await axiosInstance.post(
         `${BASE_URL}/register`,
         {
           ...payload,
@@ -39,15 +39,9 @@ export class AuthService {
 
   async login(payload: LoginProps) {
     try {
-      const result = await axios.post(
-        `${BASE_URL}/login`,
-        {
-          ...payload,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      const result = await axiosInstance.post(`${BASE_URL}/login`, {
+        ...payload,
+      });
       return result.data;
     } catch (error) {
       if (ENVIRONMENT === 'development') {
@@ -58,7 +52,7 @@ export class AuthService {
 
   async logout() {
     try {
-      const result = await axios.post(`${BASE_URL}/logout`, {
+      const result = await axiosInstance.post(`${BASE_URL}/logout`, {
         withCredentials: true,
       });
       return result.data;

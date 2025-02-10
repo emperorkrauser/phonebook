@@ -41,7 +41,12 @@ export const Contacts = () => {
     <>
       <ContactsLayout>
         <h4>My Contacts List:</h4>
-        <ul className="w-full">
+        {!isLoading ? (
+          contacts.length === 0 && <p>&nbsp;No contacts found.</p>
+        ) : (
+          <p>&nbsp;Loading...</p>
+        )}
+        <ul className='w-full'>
           {contacts.length > 0 &&
             contacts.map((contact) => {
               return (

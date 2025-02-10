@@ -12,8 +12,8 @@ const secretKey = process.env.SECRET_KEY as string;
 const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
 const refreshTokens: string[] = [];
 
-export function AuthRouter(AppRouter: Router) {
-  AppRouter.route('/login').post(async (req: Request, res: Response) => {
+export function AuthRouter(AuthRouter: Router) {
+  AuthRouter.route('/login').post(async (req: Request, res: Response) => {
     const { error, value } = AuthSchemaValidation.validate(req.body);
     const { email, password } = value;
     try {
@@ -74,7 +74,7 @@ export function AuthRouter(AppRouter: Router) {
     }
   });
 
-  AppRouter.route('/token').post((req: Request, res: Response) => {
+  AuthRouter.route('/token').post((req: Request, res: Response) => {
     const { token } = req.body;
     if (!token) {
       return res.status(401).json({ message: 'Refresh token is required' });
@@ -99,7 +99,7 @@ export function AuthRouter(AppRouter: Router) {
     });
   });
 
-  AppRouter.route('/register').post(async (req: Request, res: Response) => {
+  AuthRouter.route('/register').post(async (req: Request, res: Response) => {
     const { error, value } = RegisterSchemaValidation.validate(req.body);
     const { email, password } = value;
     const saltRounds = 10;
@@ -144,7 +144,7 @@ export function AuthRouter(AppRouter: Router) {
     }
   });
 
-  AppRouter.route('/logout').post((req: Request, res: Response) => {
+  AuthRouter.route('/logout').post((req: Request, res: Response) => {
     const { token } = req.body;
     const index = refreshTokens.indexOf(token);
     if (index > -1) {

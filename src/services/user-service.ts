@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { BaseProps } from '../components';
+import { axiosInstance } from '../utils';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export interface UserProps extends Partial<BaseProps> {
@@ -15,7 +15,7 @@ export interface UserProps extends Partial<BaseProps> {
 export class UserService {
   async browseAll(payload: UserProps) {
     try {
-      const result = await axios.get(`${BASE_URL}/user`, {
+      const result = await axiosInstance.get(`${BASE_URL}/user`, {
         params: payload,
       });
       return result.data;
@@ -26,7 +26,7 @@ export class UserService {
 
   async browseOne(uuid: string) {
     try {
-      const result = await axios.get(`${BASE_URL}/user/${uuid}`);
+      const result = await axiosInstance.get(`${BASE_URL}/user/${uuid}`);
       return result.data;
     } catch (error) {
       console.error(error);
@@ -35,7 +35,10 @@ export class UserService {
 
   async updateOne(uuid: string, payload: UserProps) {
     try {
-      const result = await axios.put(`${BASE_URL}/user/edit/${uuid}`, payload);
+      const result = await axiosInstance.put(
+        `${BASE_URL}/user/edit/${uuid}`,
+        payload
+      );
       return result.data;
     } catch (error) {
       console.error(error);
@@ -44,7 +47,7 @@ export class UserService {
 
   async deleteOne(uuid: string) {
     try {
-      const result = await axios.put(`${BASE_URL}/user/delete/${uuid}`);
+      const result = await axiosInstance.put(`${BASE_URL}/user/delete/${uuid}`);
       return result.data;
     } catch (error) {
       console.error(error);

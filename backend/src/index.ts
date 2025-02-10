@@ -29,9 +29,9 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use('/api', AppRouter);
 
-ContactRouter(AppRouter);
-UserRouter(AppRouter);
 AuthRouter(AppRouter);
+UserRouter(AppRouter);
+ContactRouter(AppRouter);
 
 app.listen(port, () => {
   console.log(`Server running at ${port}`);

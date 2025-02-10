@@ -66,7 +66,12 @@ export const Users = () => {
     <>
       <UserLayout>
         <h4>All Users List:</h4>
-        <ul className="w-full">
+        {!isLoading ? (
+          users.length === 0 && <p>&nbsp;No contacts found.</p>
+        ) : (
+          <p>&nbsp;Loading...</p>
+        )}
+        <ul className='w-full'>
           {users.length > 0 ? (
             users.map((user) => {
               return (
