@@ -1,10 +1,10 @@
+import { useSelector } from 'react-redux';
+
 export const YourInfo = () => {
-  const { firstName, lastName, email, contactNo } = {
-    firstName: 'Christian Adam',
-    lastName: 'Rosell',
-    email: 'email@example.com',
-    contactNo: '1234567890',
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { user: currentUser } = useSelector((state: any) => state.auth);
+
+  const { firstName, lastName, email, contactNo } = currentUser;
   return (
     <>
       <h4>Your contact details:</h4>
