@@ -10,10 +10,11 @@ MongoServer;
 const port = process.env.PORT || 3001;
 const app = express();
 const AppRouter = Router();
+const FRONT_END_URL = process.env.FRONT_END_URL || 'http://localhost:5173';
 
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: FRONT_END_URL,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
