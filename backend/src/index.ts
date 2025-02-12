@@ -14,7 +14,11 @@ const FRONT_END_URL = process.env.FRONT_END_URL || 'http://localhost:5173';
 
 app.use(
   cors({
-    origin: FRONT_END_URL,
+    origin: [
+      FRONT_END_URL,
+      'https://www.phonebook-ashy.vercel.app',
+      'http://localhost:5173',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   })
