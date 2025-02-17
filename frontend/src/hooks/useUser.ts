@@ -9,6 +9,7 @@ export function useUser() {
   }
 
   async function updateOne(uuid: string, payload: UserProps) {
+    console.log('updateOne', uuid, payload);
     const result = await userService.updateOne(uuid, payload);
     return result;
   }

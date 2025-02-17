@@ -9,6 +9,9 @@ import { Provider } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const persistConfig = {
   key: 'root',
@@ -35,11 +38,13 @@ export const persistor = persistStore(store);
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <App />
+          </PersistGate>
+        </Provider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
 );

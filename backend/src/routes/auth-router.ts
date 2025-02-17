@@ -48,7 +48,7 @@ export function AuthRouter(AuthRouter: Router) {
       }
 
       const token = jwt.sign({ id: user?._id, email: user?.email }, secretKey, {
-        expiresIn: '1h',
+        expiresIn: '8h',
       });
 
       const refreshToken = jwt.sign(

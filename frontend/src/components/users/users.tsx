@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import { UserItem } from './user-item';
 import { UserLayout } from './user-layout';
 import { useUser } from '../../hooks';
 import { BaseProps } from '../contacts';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 interface User extends BaseProps {
   _id: string;
@@ -17,71 +17,67 @@ interface User extends BaseProps {
 
 export const Users = () => {
   const { updateOne, browseAll, deleteOne } = useUser();
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchUsers = async () => {
-    setIsLoading(true);
-    const result = await browseAll({ deletedAt: null });
-    if (!result) {
-      setIsLoading(false);
-      return;
-    }
-    setUsers(result.data);
-    setIsLoading(false);
-  };
+  const { data, isPending, refetch } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => browseAll({ deletedAt: null }),
+  });
 
-  useEffect(() => {
-    (async () => {
-      await fetchUsers();
-    })();
-  }, []);
+  const { mutate: updateUserMutation, isPending: isMutating } = useMutation({
+    mutationFn: async ({ _id, status }: { _id: string; status: string }) => {
+      return updateOne(_id, {
+        status: status === 'active' ? 'inactive' : 'active',
+      });
+    },
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
 
-  const handleActivate = async (updateData: {
-    _id: string;
-    status: string;
-  }) => {
-    const { _id, status } = updateData;
-    const res = await updateOne(_id, {
-      status: status === 'active' ? 'inactive' : 'active',
-    });
-    if (!res) return;
+  const { mutate: deleteUserMutation } = useMutation({
+    mutationFn: async (uuid: string) => {
+      return deleteOne(uuid);
+    },
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
 
-    await fetchUsers();
-  };
-
-  const handleDelete = async (uuid: string) => {
-    const res = await deleteOne(uuid);
-    if (!res) return;
-    await fetchUsers();
-  };
-
-  const handleShare = async (id: string, contacts: string[]) => {
-    const res = await updateOne(id, { contacts });
-    if (!res) return;
-    await fetchUsers();
-  };
+  const { mutate: shareContactMutation } = useMutation({
+    mutationFn: async ({
+      _id,
+      contacts,
+    }: {
+      _id: string;
+      contacts: string[];
+    }) => {
+      return updateOne(_id, { contacts });
+    },
+    onSuccess: async () => {
+      await refetch();
+    },
+  });
 
   return (
     <>
       <UserLayout>
         <h4>All Users List:</h4>
-        {!isLoading ? (
-          users.length === 0 && <p>&nbsp;No contacts found.</p>
+        {!isPending || !isMutating ? (
+          data?.data?.length === 0 && <p>&nbsp;No contacts found.</p>
         ) : (
           <p>&nbsp;Loading...</p>
         )}
         <ul className='w-full'>
-          {users.length > 0 ? (
-            users.map((user) => {
+          {data?.data?.length > 0 ? (
+            data?.data?.map((user: User) => {
               return (
                 <UserItem
                   key={user.contactNo}
                   user={user}
-                  isLoading={isLoading}
-                  handleActivate={handleActivate}
-                  handleDelete={handleDelete}
-                  handleShare={handleShare}
+                  isLoading={isPending}
+                  handleActivate={updateUserMutation}
+                  handleDelete={deleteUserMutation}
+                  handleShare={shareContactMutation}
                 />
               );
             })
